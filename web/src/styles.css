@@ -1,1 +1,52 @@
 /* You can add global styles to this file, and also import other style files */
+/*Colors:
+Gradient Yellow: #FBC900
+Gradient Orange: #ED8500
+Golden Yellow (all other places yellow is used): #E0AA51
+Black: #000
+White: #FFF
+Fonts:
+ Regular: All normal text, the second part of Headers that are less bold
+Montserrat Bold: All Headers, beginning of headers that are bolder, and Project acronyms
+Montserrat Semibold: Titles in the Project Information section*/
+
+.gradient-yellow {
+    background-color: #FBC900;
+}
+
+.gradient-orange {
+    background-color: #ed8500
+}
+
+.golden-yellow {
+   background-color:  #E0AA51
+}
+
+.black {
+    background-color: #000;
+}
+
+.white {
+    background-color: #FFF;
+}
+
+.montserrat-normal {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+.montserrat-bold {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+}
+
+.montserrat-semi {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
