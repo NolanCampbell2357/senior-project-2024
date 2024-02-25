@@ -1,0 +1,28 @@
+{
+  "name": "functions",
+  "version": "0.0.1",
+  "description": "Functions Folder",
+  "main": ".prettierrc.js",
+  "scripts": {
+    "format": "prettier --write \"./**/*.(ts|js)\" \"!./**/(build|deploy|dist)/**\" *.json\"",
+    "lint": "eslint --ext js,ts src",
+    "lint:fix": "eslint --ext js,ts --fix src"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.147.0",
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "11.1.6",
+    "@types/aws-lambda": "^8.10.122",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1468.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.2.5",
+    "rollup-plugin-babel": "^4.4.0",
+    "ts-node": "^10.9.1",
+    "eslint": "^8.57.0"
+  }
+}
