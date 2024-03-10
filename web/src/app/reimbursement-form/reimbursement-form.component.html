@@ -1,0 +1,174 @@
+
+<app-header></app-header>
+<div class="gradient-yellow">
+  <div class="container white">
+    <mat-card >
+      <div class="text-center">
+        <h3 class="text-center">Certification Approval and Reimbursement Request Form</h3>
+      </div>
+      <mat-card-content>
+        <div class="container disply-flex ">
+          <div class="row ">
+            <p class="text-center">
+              Steps to receive approval for reimbursement for future certificate
+              or training:<br />
+              1. Complete this form BEFORE you take your Certification or
+              training.<br />
+              2. Receive approval from supervisor or leadership<br />
+              3. Submit passing exam document and receipt to hr&#64;risenone.com<br />
+              Please note, reimbursement is only for passing exams, not for exam
+              attempts Certificates already completed may not be approved. Please
+              plan ahead and submit form BEFORE certification or training is taken
+            </p>
+          </div>
+          <form>
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Previous Request Form</mat-label>
+                  <mat-select>
+                    <mat-option></mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <button mat-fab extended>Add New</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>First name</mat-label>
+                  <input matInput />
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Name of Certification</mat-label>
+                  <input matInput/>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <mat-checkbox
+                >ROC has requested I complete this training</mat-checkbox
+              >
+              <mat-checkbox>Personal Development</mat-checkbox>
+            </div>
+                <div class="row">
+                    <mat-form-field>
+                      <mat-label>Reason for Certification</mat-label>
+                      <textarea matInput></textarea>
+                    </mat-form-field>   
+                  </div>
+       
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Estimated Time of Completion</mat-label>
+                  <textarea matInput></textarea>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Choose a date</mat-label>
+                  <input matInput [matDatepicker]="estimatedCompletion" />
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="estimatedCompletion"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #estimatedCompletion></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Certification Expiration</mat-label>
+                  <input matInput [matDatepicker]="certificationExpiration" />
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="certificationExpiration"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #certificationExpiration></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Certification Cost</mat-label>
+                  <input matInput />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Name of Previous Certification/Training</mat-label>
+                  <input matInput />
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field>
+                  <mat-label>Date of Previous Certification/Training</mat-label>
+                  <input matInput [matDatepicker]="previousCertificateDate" />
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="previousCertificateDate"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #previousCertificateDate></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="signOff">
+                  <mat-label>Employee Sign Off Date</mat-label>
+                  <input matInput [matDatepicker]="employeeSignOff" />
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="employeeSignOff"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #employeeSignOff></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="signOff">
+                  <mat-label>Lead Sign Off Date</mat-label>
+                  <input matInput [matDatepicker]="leadSignOff" />
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="leadSignOff"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #leadSignOff></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="signOff">
+                  <mat-label>Executive Sign Off Date</mat-label>
+                  <input matInput [matDatepicker]="executiveSignOff" />
+                  <mat-hint>MM/DD/YYYY</mat-hint>
+                  <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="executiveSignOff"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #executiveSignOff></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+                <button mat-fab extended class="white ms-auto">Export to PDF</button>
+                <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+            </div>
+  
+  
+          </form>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

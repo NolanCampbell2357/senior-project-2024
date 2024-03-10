@@ -9,6 +9,7 @@ Fonts:
  Regular: All normal text, the second part of Headers that are less bold
 Montserrat Bold: All Headers, beginning of headers that are bolder, and Project acronyms
 Montserrat Semibold: Titles in the Project Information section*/
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
 
 .gradient-yellow {
     background-color: #FBC900;
@@ -49,4 +50,16 @@ Montserrat Semibold: Titles in the Project Information section*/
     font-optical-sizing: auto;
     font-weight: 600;
     font-style: normal;
+}
+mat-form-field.signOff{
+    width: auto;
+}
+
+.row{
+    .col{
+        mat-form-field{
+            width: 350px;
+        }
+    }
+  
 }
