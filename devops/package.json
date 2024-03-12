@@ -1,0 +1,27 @@
+{
+  "name": "devops",
+  "version": "0.0.1",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "bin": {
+    "sp": "./cli/cli.cmd"
+  },
+  "scripts": {
+    "format": "prettier --write ./**/*.js ./**/*.ts *.json",
+    "lint": "eslint ./*.js ./modules/*.js",
+    "lint:fix": "eslint --fix ./**/*.js"
+  },
+  "dependencies": {
+    "@aws-sdk/client-lambda": "^3.529.1",
+    "@aws-sdk/client-dynamodb": "^3.529.1",
+    "eslint": "^8.57.0",
+    "archiver": "^7.0.1",
+    "command-line-args": "^5.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "prettier": "^3.2.5"
+  }
+}
