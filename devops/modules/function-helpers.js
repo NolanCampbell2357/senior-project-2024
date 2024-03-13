@@ -1,9 +1,9 @@
-const git = require("../modules/git");
+const git = require("./git");
 const fs = require("node:fs");
 const path = require("node:path");
 const childProcess = require("node:child_process");
-const zip = require("zip.js");
-const aws_lambda = require("./aws-lambda.js");
+const zip = require("./zip");
+const aws_lambda = require("./aws-lambda");
 
 module.exports = {
   removeOldFolders: (functionName, functionsRoot) => {
@@ -75,8 +75,7 @@ module.exports = {
     );
 
     childProcess.execSync(
-      `npx rollup --silent --config ${path.resolve(functionsRoot, "rollupConfig.js")} --input ${functionBuildIndexPath}
-    --file ${functionBuildMinifyIndexPath}`,
+      `npx rollup --silent --config ${path.resolve(functionsRoot, "rollup.config.js")} --input ${functionBuildIndexPath} --file ${functionBuildMinifyIndexPath}`,
       {
         cwd: functionsRoot,
         stdio: "inherit"

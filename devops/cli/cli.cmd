@@ -1,11 +1,12 @@
-for /f "tokens=* USEBACKQ" %%F in (`git rev-parse --show-toplevel`) do (set root=%%F)
+for /f "tokens=* USEBACKQ" %%F in (`git rev-parse --show-toplevel`) do (set rsp_root=%%F)
 
 pushd .
-cd %root%/devops/cli
+cd %rsp_root%/devops/cli
 
 :node
     node %1 %2 %3 %4 %5 %6 %7 %8
+    goto exit
 
 :exit
-    set root=
+    set rsp_root=
     popd

@@ -8,6 +8,6 @@ module.exports = {
     const archive = new archiver("zip", { zlib: { level: 1 } });
     archive.pipe(outputStream);
     archive.glob(globPattern, { cwd: sourceFolder });
-    return archiver.finalize();
+    return archive.finalize();
   }
 };

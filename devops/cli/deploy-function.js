@@ -12,9 +12,9 @@ const {
 } = require("../modules/function-helpers");
 
 const getConfiguration = async () => {
-  const gitRoot = git.gitRoot();
+  const gitRoot = git.getGitRoot();
   const optionDefinitions = [
-    { name: "function", type: String, multiple: true, defaultOptions: true },
+    { name: "function", type: String, multiple: true, defaultOption: true },
     { name: "all", type: Boolean }
   ];
 
@@ -35,7 +35,7 @@ const getConfiguration = async () => {
       )
       .map((x) => x.name);
   } else {
-    (functionNames = options["function"]),
+    functionNames = options["function"].
       map((x) => x.toLowerCase()).filter((value, index, arr) => {
         if (index === arr.indexOf(value)) return value;
       });
@@ -53,7 +53,7 @@ const getConfiguration = async () => {
   console.log("Deploy Function");
   const configuration = await getConfiguration();
 
-  for (const functionName in configuration.functionNames) {
+  for (const functionName of configuration.functionNames) {
     console.log("====================");
     console.log(`Prepare Function ${functionName}`);
 

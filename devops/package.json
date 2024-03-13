@@ -8,7 +8,7 @@
     "npm": ">=9.0.0"
   },
   "bin": {
-    "sp": "./cli/cli.cmd"
+    "rsp": "./cli/cli.cmd"
   },
   "scripts": {
     "format": "prettier --write ./**/*.js ./**/*.ts *.json",
