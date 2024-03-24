@@ -22,3 +22,17 @@ navigate to the `devops` folder and run `npm install --global`
 ### Function names
 Names of lambda functions should be kebab-case.
 The name of the folder in ./functions/ should match the created lambda function.
+
+## API
+
+### GET /form
+- Returns all forms
+
+### POST /form
+- Creates a new form
+
+### POST /form/{id}
+- Update form with id {`id`}
+
+### POST /form/{id}/approve
+- Approve/Deny form with id {`id`}
