@@ -1,1 +1,0 @@
-Paths: "/getAllForms", "/updateFormStatus", "/createForm";
