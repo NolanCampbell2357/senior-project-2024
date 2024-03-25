@@ -7,7 +7,7 @@
         <h3 class="text-center">Certification Approval and Reimbursement Request Form</h3>
       </div>
       <mat-card-content>
-        <div class="container disply-flex ">
+        <div class="container disply-flex " id="pdf">
           <div class="row ">
             <p class="text-center">
               Steps to receive approval for reimbursement for future certificate
@@ -22,7 +22,7 @@
             </p>
           </div>
           <form>
-            <div class="row">
+            <div class="row pt-3">
               <div class="col">
                 <mat-form-field>
                   <mat-label>Previous Request Form</mat-label>
@@ -161,12 +161,12 @@
               </div>
             </div>
             <div class="row">
-                <button mat-fab extended class="white ms-auto">Export to PDF</button>
+                <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
                 <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
             </div>
   
-  
           </form>
+
         </div>
       </mat-card-content>
     </mat-card>
