@@ -1,0 +1,32 @@
+.admin {
+  width: 100vw;
+  height: 100vh;
+}
+
+.admin-forms-nav {
+  width: 100vw;
+  height: 100vh;
+  /*border: 1px solid rgba(0,0,0,0.5);*/
+}
+
+.sidenav-button {
+  display: flex;
+  height: 25%;
+}
+
+.form-sidenav {
+  padding: 20px;
+  width: 33vh;
+}
+
+.sidenav-content {
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 10px;
+}
+
+.nav-button {
+  align-content: center;
+  justify-content: center;
+}

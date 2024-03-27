@@ -1,2 +1,9 @@
-<app-reimbursement-form></app-reimbursement-form>
+<mat-tab-group class="home-tabs" dynamicHeight="True">
+  <mat-tab label="Employee Form">
+    <app-reimbursement-form></app-reimbursement-form>
+  </mat-tab>
+  <mat-tab label="Admin" >
+    <app-admin></app-admin>
+  </mat-tab>
+</mat-tab-group>
 <router-outlet />
