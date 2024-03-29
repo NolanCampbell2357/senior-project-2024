@@ -59,7 +59,13 @@ const updateForm: (id: string, input: TInputBody) => Promise<void> = async (
   // Should update the fields that are listed in the TInputBody types
  // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/UpdateItemCommand/
   const commandInput: UpdateItemCommandInput = {
+    Key: id: input,
     TableName: "reimbursement",
+    UpdateExpression: `SET employeeSignOffDate = ${input.employeeSignOffDate},
+                           leadSignOffDate = ${input.leadSignOffDate},
+                           executiveSignOffDate = ${input.executiveSignOffDate},
+                           approved = ${input.approved},
+                      `,
   };
 
   const command: UpdateItemCommand = new UpdateItemCommand(commandInput);
