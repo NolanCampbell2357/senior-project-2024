@@ -5,7 +5,7 @@ const path = require("node:path");
 const {
   removeOldFolders,
   buildFunction,
-  minifyFunction,
+  minifyFunction
 } = require("../modules/function-helpers");
 
 const getConfiguration = () => {
@@ -33,8 +33,9 @@ const getConfiguration = () => {
       )
       .map((x) => x.name);
   } else {
-    functionNames = options["function"].
-      map((x) => x.toLowerCase()).filter((value, index, arr) => {
+    functionNames = options["function"]
+      .map((x) => x.toLowerCase())
+      .filter((value, index, arr) => {
         if (index === arr.indexOf(value)) return value;
       });
   }
