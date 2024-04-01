@@ -1,21 +1,26 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { TErrorBody, TResultBody } from "./types";
-const url = "https://aws.amazon.com/";
+import crypto from "node:crypto";
+import {
+  AttributeValue,
+  DynamoDBClient,
+  BatchGetItemCommand,
+  BatchGetItemCommandInput
+} from "@aws-sdk/client-dynamodb";
+
 export const handler: (
   event: APIGatewayProxyEvent
 ) => Promise<APIGatewayProxyResult> = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const res: Response = await fetch(url);
+    const response = getForm()
 
-    const body: TResultBody = {
-      message: await res.text()
-    };
-
+    console.log(response)
+    
     return {
-      statusCode: res.status,
-      body: JSON.stringify(body)
+      statusCode: 200,
+      body: JSON.stringify(response)
     };
   } catch (err) {
     console.log(err); // Lambda will automatically log console.log() to cloudwatch
@@ -28,4 +33,15 @@ export const handler: (
       body: JSON.stringify(error)
     };
   }
+};
+
+const getForm = async () => {
+  const input: BatchGetItemCommandInput = {
+    RequestItems: {"reimbursement": {Keys: [{id: {S: ""}}]}}
+  };
+
+  const client = new DynamoDBClient({});
+  const response = await client.send(new BatchGetItemCommand(input));
+  client.destroy();
+  return response;
 };
