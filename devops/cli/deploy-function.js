@@ -35,8 +35,9 @@ const getConfiguration = async () => {
       )
       .map((x) => x.name);
   } else {
-    functionNames = options["function"].
-      map((x) => x.toLowerCase()).filter((value, index, arr) => {
+    functionNames = options["function"]
+      .map((x) => x.toLowerCase())
+      .filter((value, index, arr) => {
         if (index === arr.indexOf(value)) return value;
       });
   }
