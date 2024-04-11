@@ -1,3 +1,9 @@
 {
- "extends": "../tsconfig.json"
+ "extends": "../tsconfig.json",
+ "include": [
+  "C:\\Users\\Nolan\\Documents\\Git\\senior-project-2024\\functions\\post-approve-form\\src\\**\\*"
+ ],
+ "compilerOptions": {
+  "outDir": "C:\\Users\\Nolan\\Documents\\Git\\senior-project-2024\\functions\\post-approve-form\\build\\src"
+ }
 }

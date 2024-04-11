@@ -1,11 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { TErrorBody, TForm, TInputBody, TResultBody } from "./types";
-import { marshall, marshallOptions } from "@aws-sdk/util-dynamodb";
+import { TErrorBody, TInputBody, TResultBody } from "./types";
 import {
-  AttributeValue,
   DynamoDBClient,
-  PutItemCommand,
-  PutItemCommandInput,
   UpdateItemCommand,
   UpdateItemCommandInput
 } from "@aws-sdk/client-dynamodb";
@@ -18,14 +14,19 @@ export const handler: (
   try {
     // Get request body
     const inputBody: TInputBody = JSON.parse(event?.body ?? "{}") as TInputBody;
-    
+
+    // Get id
+    const id: string = event.pathParameters?.["id"] ?? "";
+    console.log(`[post-form-approve] ID: ${id}`)
+
     // Update item
-    updateForm(inputBody); // TODO: Implement this function
+    await updateForm(id, inputBody);
 
     // Return result
     const resultBody: TResultBody = {
       approved: inputBody.approved
-    }
+    };
+    console.log(`[post-form-approve] Result: ${resultBody}`)
     return {
       statusCode: 200,
       body: JSON.stringify(resultBody)
@@ -44,28 +45,34 @@ export const handler: (
 };
 
 const updateForm: (id: string, input: TInputBody) => Promise<void> = async (
-  id: string, input: TInputBody
+  id: string,
+  input: TInputBody
 ): Promise<void> => {
-  const marshallOptions: marshallOptions = {
-    removeUndefinedValues: true
-  };
-
-  const marshalledItem: Record<string, AttributeValue> = marshall(
-    input,
-    marshallOptions
-  );
-
-  // TODO: Landon, this is what you need to finish implementing
-  // Should update the fields that are listed in the TInputBody types
- // https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/client/dynamodb/command/UpdateItemCommand/
   const commandInput: UpdateItemCommandInput = {
-    Key: id: input,
+    Key: {
+      id: {
+        S: id
+      }
+    },
     TableName: "reimbursement",
-    UpdateExpression: `SET employeeSignOffDate = ${input.employeeSignOffDate},
-                           leadSignOffDate = ${input.leadSignOffDate},
-                           executiveSignOffDate = ${input.executiveSignOffDate},
-                           approved = ${input.approved},
-                      `,
+    UpdateExpression: `SET employeeSignOffDate = :employeeSignOffDate,
+                           leadSignOffDate = :leadSignOffDate,
+                           executiveSignOffDate = :executiveSignOffDate,
+                           approved = :approved`,
+    ExpressionAttributeValues: {
+      ":employeeSignOffDate": {
+        S: input.employeeSignOffDate
+      },
+      ":leadSignOffDate": {
+        S: input.leadSignOffDate
+      },
+      ":executiveSignOffDate": {
+        S: input.executiveSignOffDate
+      },
+      ":approved": {
+        BOOL: input.approved
+      }
+    }
   };
 
   const command: UpdateItemCommand = new UpdateItemCommand(commandInput);

@@ -6,12 +6,13 @@ export type TForm = {
   personalDevelopment?: boolean;
   reason?: string;
   estimatedCompletionTime?: string;
-  estimatedCompletionDate?: Date;
-  certExpirationDate?: Date;
+  estimatedCompletionDate?: string;
+  certExpirationDate?: string;
   certCost?: number;
   nameOfPreviousCert?: string;
-  dateOfPreviousCert?: Date;
-  employeeSignOffDate?: Date;
-  leadSignOffDate?: Date;
-  executiveSignOffDate?: Date;
+  dateOfPreviousCert?: string;
+  employeeSignOffDate?: string;
+  leadSignOffDate?: string;
+  executiveSignOffDate?: string;
+  approved?: boolean
 };
