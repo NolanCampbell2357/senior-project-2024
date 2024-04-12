@@ -1,11 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { TErrorBody, TResultBody } from "./types";
-import crypto from "node:crypto";
 import {
-  AttributeValue,
   DynamoDBClient,
-  BatchGetItemCommand,
-  BatchGetItemCommandInput
+  ScanCommand,
+  ScanCommandInput,
 } from "@aws-sdk/client-dynamodb";
 
 export const handler: (
@@ -14,7 +12,7 @@ export const handler: (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
   try {
-    const response = getForm()
+    const response = await getForm()
 
     console.log(response)
     
@@ -36,12 +34,12 @@ export const handler: (
 };
 
 const getForm = async () => {
-  const input: BatchGetItemCommandInput = {
-    RequestItems: {"reimbursement": {Keys: [{id: {S: ""}}]}}
+  const input: ScanCommandInput = {
+    TableName: "reimbursement"
   };
 
   const client = new DynamoDBClient({});
-  const response = await client.send(new BatchGetItemCommand(input));
+  const response = await client.send(new ScanCommand(input));
   client.destroy();
   return response;
 };
