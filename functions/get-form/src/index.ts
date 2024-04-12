@@ -14,7 +14,7 @@ export const handler: (
   try {
     const response = await getForm()
 
-    console.log(response)
+    console.log("INFO, get-form returned: ", JSON.stringify(response))
     
     return {
       statusCode: 200,
