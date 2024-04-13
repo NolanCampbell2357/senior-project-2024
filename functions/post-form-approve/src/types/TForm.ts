@@ -14,5 +14,5 @@ export type TForm = {
   employeeSignOffDate?: string;
   leadSignOffDate?: string;
   executiveSignOffDate?: string;
-  approved?: boolean;
+  approved?: boolean
 };

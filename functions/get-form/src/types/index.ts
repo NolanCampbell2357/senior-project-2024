@@ -1,2 +1,2 @@
 export * from "./TErrorBody";
-export * from "./TResultBody";
+export * from "./TForm";

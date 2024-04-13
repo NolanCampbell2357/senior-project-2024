@@ -36,3 +36,10 @@ The name of the folder in ./functions/ should match the created lambda function.
 
 ### POST /form/{id}/approve
 - Approve/Deny form with id {`id`}
+- Body of request:
+      {
+        employeeSignOffDate: "",
+        leadSignOffDate: "",
+        executiveSignOffDate: "",
+        approved: true,
+      }
