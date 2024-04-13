@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { TErrorBody, TForm, TInputBody, TResultBody } from "./types";
+import { TErrorBody, TForm, TInputBody } from "./types";
 import crypto from "node:crypto";
 import { marshall, marshallOptions } from "@aws-sdk/util-dynamodb";
 import {
