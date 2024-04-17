@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { HeaderComponent } from '../layout/header/header.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -10,6 +9,7 @@ import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIcon } from '@angular/material/icon';
 import {
   AbstractControl,
   FormsModule,
@@ -39,7 +39,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
     MatCheckboxModule,
     MatDatepickerModule,
     MatInputModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIcon
   ]
 })
 export class ReimbursementFormComponent {
@@ -47,7 +48,6 @@ export class ReimbursementFormComponent {
   private baseUrl =
     'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
-   
     'Access-Control-Allow-Headers':
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,access-control-allow-origin',
     'Access-Control-Allow-Origin': '*'
@@ -56,6 +56,8 @@ export class ReimbursementFormComponent {
   selectedForm: TForm = {
     id: ''
   };
+  todayDate = new Date();
+  file!: File;
 
   reimbursementForm = this.formBuilder.group({
     employeeName: [
@@ -76,9 +78,9 @@ export class ReimbursementFormComponent {
     certCost: ['', [Validators.required, Validators.min(0)]],
     nameOfPreviousCert: [''],
     dateOfPreviousCert: [''],
-    employeeSignOffDate: [''],
-    leadSignOffDate: [''],
-    executiveSignOffDate: ['']
+    employeeSignOffDate: { value: new Date() },
+    leadSignOffDate: { value: null, disabled: true },
+    executiveSignOffDate: { value: null, disabled: true }
   });
 
   ngOnInit() {
@@ -99,7 +101,7 @@ export class ReimbursementFormComponent {
   }
 
   getSelectedForm(event: string) {
-      this.selectedForm = this.getForm(event);
+    this.selectedForm = this.getForm(event);
   }
 
   getForm(id: string): TForm {
@@ -129,6 +131,13 @@ export class ReimbursementFormComponent {
   submitForm() {
     const url = this.baseUrl + '/form';
 
+    let formParams;
+
+    if(this.file) {
+      formParams = new FormData();
+      formParams.append('file', this.file)
+    }
+
     const body = {
       employeeName: this.reimbursementForm.value.employeeName,
       certName: this.reimbursementForm.value.certName,
@@ -143,11 +152,12 @@ export class ReimbursementFormComponent {
       certCost: this.reimbursementForm.value.certCost,
       nameOfPreviousCert: this.reimbursementForm.value.nameOfPreviousCert,
       dateOfPreviousCert: this.reimbursementForm.value.dateOfPreviousCert,
-      employeeSignOffDate: this.reimbursementForm.value.employeeSignOffDate
+      employeeSignOffDate: this.reimbursementForm.value.employeeSignOffDate,
+      file: JSON.stringify(formParams)
     };
 
     console.log(body);
-
+    
     this.http.post(url, body, { headers: this.headers }).subscribe((data) => {
       console.log(data);
     });
@@ -155,7 +165,7 @@ export class ReimbursementFormComponent {
 
   createNewForm() {
     this.reimbursementForm.reset();
-    this.reimbursementForm.markAsUntouched();
+    this.reimbursementForm.markAsPristine();
   }
 
   forbiddenCharacterValidator(nameRe: RegExp): ValidatorFn {
@@ -165,10 +175,11 @@ export class ReimbursementFormComponent {
     };
   }
 
-  dateValidator(date: Date, beInFuture: boolean, beInPast: boolean) {
-    const todayDate = new Date();
-    console.log(this.dateValidator);
+  onFilechange(event: any) {
+    console.log(event.target.files[0])
+    this.file = event.target.files[0]
   }
+
 }
 
 export interface TForm {
@@ -188,4 +199,3 @@ export interface TForm {
   leadSignOffDate?: Date;
   executiveSignOffDate?: Date;
 }
-

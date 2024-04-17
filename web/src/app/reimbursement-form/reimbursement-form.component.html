@@ -25,6 +25,7 @@
                 <mat-form-field>
                   <mat-label>Previous Request Form</mat-label>
                   <mat-select (valueChange)="getSelectedForm($event)">
+                    <mat-option></mat-option>
                     @for(form of forms; track form.id){
                     <mat-option [value]="form.id">{{form.certName}}</mat-option>
                     }
@@ -83,7 +84,7 @@
               <div class="col">
                 <mat-form-field>
                   <mat-label>Estimation Certification/Training Date</mat-label>
-                  <input [ngModel]="selectedForm.estimatedCompletionDate" matInput [matDatepicker]="estimatedCompletion" formControlName="estimatedCompletionDate" />
+                  <input [min]="todayDate" [ngModel]="selectedForm.estimatedCompletionDate" matInput [matDatepicker]="estimatedCompletion" formControlName="estimatedCompletionDate" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -97,7 +98,7 @@
               <div class="col">
                 <mat-form-field>
                   <mat-label>Certification Expiration</mat-label>
-                  <input [ngModel]="selectedForm.certExpirationDate" matInput [matDatepicker]="certificationExpiration" formControlName="certExpirationDate" />
+                  <input [min]="todayDate" [ngModel]="selectedForm.certExpirationDate" matInput [matDatepicker]="certificationExpiration" formControlName="certExpirationDate" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -123,7 +124,7 @@
               <div class="col">
                 <mat-form-field>
                   <mat-label>Date of Previous Certification/Training</mat-label>
-                  <input [ngModel]="selectedForm.dateOfPreviousCert"  matInput [matDatepicker]="previousCertificateDate" formControlName="dateOfPreviousCert" />
+                  <input [max]="todayDate" [ngModel]="selectedForm.dateOfPreviousCert"  matInput [matDatepicker]="previousCertificateDate" formControlName="dateOfPreviousCert" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -137,7 +138,7 @@
               <div class="col">
                 <mat-form-field class="signOff">
                   <mat-label>Employee Sign Off Date</mat-label>
-                  <input [ngModel]="selectedForm.employeeSignOffDate" matInput [matDatepicker]="employeeSignOff" formControlName="employeeSignOffDate"/>
+                  <input [min]="todayDate" [max]="todayDate" [ngModel]="selectedForm.employeeSignOffDate" matInput [matDatepicker]="employeeSignOff" formControlName="employeeSignOffDate"/>
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -171,6 +172,17 @@
                 </mat-form-field>
               </div>
             </div>
+            <div class="container">
+              <div class="row mt-5">
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload file example</label>
+                    <input (change)="this.onFilechange($event)" class="form-control" type="file" id="formFile">
+                  </div>
+                </div>
+              </div>
+             </div>
+             
             <div class="row">
                 <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
                 <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
