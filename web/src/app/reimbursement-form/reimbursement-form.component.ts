@@ -43,13 +43,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
     MatIcon
   ]
 })
+
 export class ReimbursementFormComponent {
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {}
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, ) {}
   private baseUrl =
     'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
     'Access-Control-Allow-Headers':
-      'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,access-control-allow-origin',
+      'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,Access-Control-Allow-Origin',
     'Access-Control-Allow-Origin': '*'
   });
   forms: TForm[] = [];
@@ -58,7 +59,7 @@ export class ReimbursementFormComponent {
   };
   todayDate = new Date();
   file!: File;
-
+  
   reimbursementForm = this.formBuilder.group({
     employeeName: [
       '',
@@ -85,7 +86,6 @@ export class ReimbursementFormComponent {
 
   ngOnInit() {
     this.getForms();
-    console.log(this.selectedForm);
   }
 
   getForms() {
@@ -95,13 +95,15 @@ export class ReimbursementFormComponent {
         return null;
       }
       Object.assign(this.forms, data);
-      console.log(this.forms);
       return this.forms;
     });
   }
 
   getSelectedForm(event: string) {
     this.selectedForm = this.getForm(event);
+    if(this.selectedForm.file) {
+      this.getFileFromBucket(this.selectedForm.file);
+    }
   }
 
   getForm(id: string): TForm {
@@ -112,6 +114,14 @@ export class ReimbursementFormComponent {
     }
     return { id: '' };
   }
+
+  getFileFromBucket(fileId: string) {
+    const url = this.baseUrl+`/file/${fileId}`;
+    this.http.get(url, {headers: this.headers}).subscribe((data) => {
+      console.log(data);
+    })
+  }
+
 
   exportToPDF() {
     var data = document.getElementById('pdf')!;
@@ -128,17 +138,10 @@ export class ReimbursementFormComponent {
     });
   }
 
-  submitForm() {
-    const url = this.baseUrl + '/form';
-
+  async submitForm() {
     let formParams;
-
-    if(this.file) {
-      formParams = new FormData();
-      formParams.append('file', this.file)
-    }
-
-    const body = {
+    let fileId = "";
+    let body = {
       employeeName: this.reimbursementForm.value.employeeName,
       certName: this.reimbursementForm.value.certName,
       ROCRequested: this.reimbursementForm.value.ROCRequested,
@@ -153,14 +156,31 @@ export class ReimbursementFormComponent {
       nameOfPreviousCert: this.reimbursementForm.value.nameOfPreviousCert,
       dateOfPreviousCert: this.reimbursementForm.value.dateOfPreviousCert,
       employeeSignOffDate: this.reimbursementForm.value.employeeSignOffDate,
-      file: JSON.stringify(formParams)
-    };
+      file: fileId,
+    }; 
 
-    console.log(body);
-    
-    this.http.post(url, body, { headers: this.headers }).subscribe((data) => {
-      console.log(data);
+    if(this.file) {
+      formParams = new FormData();
+      formParams.append('file', this.file);
+      await this.http.post(this.baseUrl+"/file", formParams, {headers: this.headers}).subscribe((res) => {
+      body.file = res.toString();
+      if(this.reimbursementForm.valid && fileId != null ){
+        const url = this.baseUrl + "/form"
+        this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
+          console.log(data);
+        })
+      } 
     });
+    }  else {
+      if(this.reimbursementForm.valid){
+        const url = this.baseUrl + "/form"
+        this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
+          console.log(data);
+        })
+      } 
+    }
+
+
   }
 
   createNewForm() {
@@ -175,11 +195,9 @@ export class ReimbursementFormComponent {
     };
   }
 
-  onFilechange(event: any) {
-    console.log(event.target.files[0])
-    this.file = event.target.files[0]
+  onFileChange(event: any) {
+    this.file = event.target.files[0];
   }
-
 }
 
 export interface TForm {
@@ -198,4 +216,5 @@ export interface TForm {
   employeeSignOffDate?: Date;
   leadSignOffDate?: Date;
   executiveSignOffDate?: Date;
+  file?: string;
 }

@@ -177,12 +177,11 @@
                 <div class="col-md-4">
                   <div class="mb-3">
                     <label for="formFile" class="form-label">Upload file example</label>
-                    <input (change)="this.onFilechange($event)" class="form-control" type="file" id="formFile">
+                    <input (change)="this.onFileChange($event)" class="form-control" type="file" id="formFile">
                   </div>
                 </div>
               </div>
-             </div>
-             
+            </div>   
             <div class="row">
                 <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
                 <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
