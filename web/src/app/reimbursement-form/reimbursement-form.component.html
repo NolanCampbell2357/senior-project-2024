@@ -42,27 +42,32 @@
                 <mat-form-field>
                   <mat-label for="employeeName">Employee Name</mat-label>
                   <input [ngModel]="selectedForm.employeeName" type="text" matInput id="employeeName" formControlName="employeeName"  />
-                </mat-form-field>
-                <div class="text-danger">
-                  @if (reimbursementForm.get('employeeName')?.invalid  && reimbursementForm.get('employeeName')?.touched )  {
-                   <mat-hint>Name is required</mat-hint>
+                  @if(reimbursementForm.get('employeeName')?.getError('required')) {
+                    <mat-error>Name is required </mat-error>
                   }
-                </div>
+                  @if(reimbursementForm.get('employeeName')?.getError('minlength')) {
+                    <mat-error>Name needs to be 5 character long</mat-error>
+                  }
+                  @if(reimbursementForm.get('employeeName')?.getError('forbiddenName')) {
+                    <mat-error>No special characters </mat-error>
+                  }
+                </mat-form-field>
               </div>
               <div class="col">
                 <mat-form-field>
                   <mat-label>Name of Certification</mat-label>
                   <input [ngModel]="selectedForm.certName" matInput formControlName="certName">
-                    @if (reimbursementForm.get('certName')?.invalid  && (reimbursementForm.get('certName')?.touched || reimbursementForm.get('certName')?.dirty))  {
-                     @if(reimbursementForm.get('certName')?.getError('required')) {
-                      <mat-error>Name is required</mat-error>
-                     }
-                    }
+                  @if(reimbursementForm.get('certName')?.getError('required')) {
+                    <mat-error>Certification name is required </mat-error>
+                  }
+                  @if(reimbursementForm.get('certName')?.getError('minlength')) {
+                    <mat-error>Certification name must be 3 character long</mat-error>
+                  }
                 </mat-form-field>
                 
               </div>
             </div>
-            <div class="row">
+            <div class="row my-2 py-2">
               <mat-checkbox formControlName="ROCRequested" [ngModel]="selectedForm.ROCRequested"
                 >ROC has requested I complete this training</mat-checkbox
               >
@@ -72,6 +77,9 @@
                     <mat-form-field>
                       <mat-label>Reason for Certification</mat-label>
                       <textarea [ngModel]="selectedForm.reason" matInput formControlName="reason"></textarea>
+                      @if(reimbursementForm.get('reason')?.getError('required')) {
+                        <mat-error>Reason is required </mat-error>
+                      }
                     </mat-form-field>   
                   </div>
             <div class="row">
@@ -79,6 +87,9 @@
                 <mat-form-field>
                   <mat-label>Estimated Time of Completion</mat-label>
                   <textarea [ngModel]="selectedForm.estimatedCompletionTime" matInput formControlName="estimatedCompletionTime"></textarea>
+                  @if(reimbursementForm.get('estimatedCompletionTime')?.getError('required')) {
+                    <mat-error>Estimation of time is required </mat-error>
+                  }
                 </mat-form-field>
               </div>
               <div class="col">
@@ -91,6 +102,12 @@
                     [for]="estimatedCompletion"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #estimatedCompletion></mat-datepicker>
+                  @if(reimbursementForm.get('estimatedCompletionDate')?.getError('required')) {
+                    <mat-error>Training date required </mat-error>
+                  }
+                  @if(reimbursementForm.get('estimatedCompletionDate')?.getError('matDatepickerMin')) {
+                    <mat-error>Training date has to be in future </mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -105,12 +122,24 @@
                     [for]="certificationExpiration"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #certificationExpiration></mat-datepicker>
+                  @if(reimbursementForm.get('certExpirationDate')?.getError('required')) {
+                    <mat-error>Expiration date required </mat-error>
+                  }
+                  @if(reimbursementForm.get('certExpirationDate')?.getError('matDatepickerMin')) {
+                    <mat-error>Expiration date has to be in future </mat-error>
+                  }
                 </mat-form-field>
               </div>
               <div class="col">
                 <mat-form-field>
                   <mat-label>Certification Cost</mat-label>
                   <input [ngModel]="selectedForm.certCost" matInput formControlName="certCost" />
+                  @if(reimbursementForm.get('certCost')?.getError('required')) {
+                    <mat-error>Certification Cost is required</mat-error>
+                  }
+                  @if(reimbursementForm.get('certCost')?.getError('min')) {
+                    <mat-error>Minimum value is zero</mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -131,6 +160,9 @@
                     [for]="previousCertificateDate"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #previousCertificateDate></mat-datepicker>
+                  @if(reimbursementForm.get('dateOfPreviousCert')?.getError('matDatepickerMax')) {
+                    <mat-error>Previous training date has to be in the past </mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -184,7 +216,11 @@
             </div>   
             <div class="row">
                 <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
-                <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                @if(reimbursementForm.errors || reimbursementForm.invalid){
+                  <button mat-fab extended  disabled class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                } @else {
+                  <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                }
             </div>
   
           </form>
