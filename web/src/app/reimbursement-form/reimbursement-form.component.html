@@ -1,4 +1,3 @@
-
 <app-header></app-header>
 <div class="gradient-yellow">
   <div class="container white">
@@ -21,64 +20,94 @@
               plan ahead and submit form BEFORE certification or training is taken
             </p>
           </div>
-          <form>
             <div class="row pt-3">
               <div class="col">
                 <mat-form-field>
                   <mat-label>Previous Request Form</mat-label>
-                  <mat-select>
+                  <mat-select (valueChange)="getSelectedForm($event)">
                     <mat-option></mat-option>
+                    @for(form of forms; track form.id){
+                    <mat-option [value]="form.id">{{form.certName}}</mat-option>
+                    }
                   </mat-select>
                 </mat-form-field>
               </div>
               <div class="col">
-                <button mat-fab extended>Add New</button>
+                <button mat-fab extended (click)="createNewForm()">Add New</button>
               </div>
             </div>
+            <form (ngSubmit)="submitForm()" [formGroup]="reimbursementForm">
             <div class="row">
               <div class="col">
                 <mat-form-field>
-                  <mat-label>First name</mat-label>
-                  <input matInput />
+                  <mat-label for="employeeName">Employee Name</mat-label>
+                  <input [ngModel]="selectedForm.employeeName" type="text" matInput id="employeeName" formControlName="employeeName"  />
+                  @if(reimbursementForm.get('employeeName')?.getError('required')) {
+                    <mat-error>Name is required </mat-error>
+                  }
+                  @if(reimbursementForm.get('employeeName')?.getError('minlength')) {
+                    <mat-error>Name needs to be 5 character long</mat-error>
+                  }
+                  @if(reimbursementForm.get('employeeName')?.getError('forbiddenName')) {
+                    <mat-error>No special characters </mat-error>
+                  }
                 </mat-form-field>
               </div>
               <div class="col">
                 <mat-form-field>
                   <mat-label>Name of Certification</mat-label>
-                  <input matInput/>
+                  <input [ngModel]="selectedForm.certName" matInput formControlName="certName">
+                  @if(reimbursementForm.get('certName')?.getError('required')) {
+                    <mat-error>Certification name is required </mat-error>
+                  }
+                  @if(reimbursementForm.get('certName')?.getError('minlength')) {
+                    <mat-error>Certification name must be 3 character long</mat-error>
+                  }
                 </mat-form-field>
+                
               </div>
             </div>
-            <div class="row">
-              <mat-checkbox
+            <div class="row my-2 py-2">
+              <mat-checkbox formControlName="ROCRequested" [ngModel]="selectedForm.ROCRequested"
                 >ROC has requested I complete this training</mat-checkbox
               >
-              <mat-checkbox>Personal Development</mat-checkbox>
+              <mat-checkbox [ngModel]="selectedForm.personalDevelopment" formControlName="personalDevelopment">Personal Development</mat-checkbox>
             </div>
                 <div class="row">
                     <mat-form-field>
                       <mat-label>Reason for Certification</mat-label>
-                      <textarea matInput></textarea>
+                      <textarea [ngModel]="selectedForm.reason" matInput formControlName="reason"></textarea>
+                      @if(reimbursementForm.get('reason')?.getError('required')) {
+                        <mat-error>Reason is required </mat-error>
+                      }
                     </mat-form-field>   
                   </div>
-       
             <div class="row">
               <div class="col">
                 <mat-form-field>
                   <mat-label>Estimated Time of Completion</mat-label>
-                  <textarea matInput></textarea>
+                  <textarea [ngModel]="selectedForm.estimatedCompletionTime" matInput formControlName="estimatedCompletionTime"></textarea>
+                  @if(reimbursementForm.get('estimatedCompletionTime')?.getError('required')) {
+                    <mat-error>Estimation of time is required </mat-error>
+                  }
                 </mat-form-field>
               </div>
               <div class="col">
                 <mat-form-field>
-                  <mat-label>Choose a date</mat-label>
-                  <input matInput [matDatepicker]="estimatedCompletion" />
+                  <mat-label>Estimation Certification/Training Date</mat-label>
+                  <input [min]="todayDate" [ngModel]="selectedForm.estimatedCompletionDate" matInput [matDatepicker]="estimatedCompletion" formControlName="estimatedCompletionDate" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
                     [for]="estimatedCompletion"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #estimatedCompletion></mat-datepicker>
+                  @if(reimbursementForm.get('estimatedCompletionDate')?.getError('required')) {
+                    <mat-error>Training date required </mat-error>
+                  }
+                  @if(reimbursementForm.get('estimatedCompletionDate')?.getError('matDatepickerMin')) {
+                    <mat-error>Training date has to be in future </mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -86,19 +115,31 @@
               <div class="col">
                 <mat-form-field>
                   <mat-label>Certification Expiration</mat-label>
-                  <input matInput [matDatepicker]="certificationExpiration" />
+                  <input [min]="todayDate" [ngModel]="selectedForm.certExpirationDate" matInput [matDatepicker]="certificationExpiration" formControlName="certExpirationDate" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
                     [for]="certificationExpiration"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #certificationExpiration></mat-datepicker>
+                  @if(reimbursementForm.get('certExpirationDate')?.getError('required')) {
+                    <mat-error>Expiration date required </mat-error>
+                  }
+                  @if(reimbursementForm.get('certExpirationDate')?.getError('matDatepickerMin')) {
+                    <mat-error>Expiration date has to be in future </mat-error>
+                  }
                 </mat-form-field>
               </div>
               <div class="col">
                 <mat-form-field>
                   <mat-label>Certification Cost</mat-label>
-                  <input matInput />
+                  <input [ngModel]="selectedForm.certCost" matInput formControlName="certCost" />
+                  @if(reimbursementForm.get('certCost')?.getError('required')) {
+                    <mat-error>Certification Cost is required</mat-error>
+                  }
+                  @if(reimbursementForm.get('certCost')?.getError('min')) {
+                    <mat-error>Minimum value is zero</mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -106,19 +147,22 @@
               <div class="col">
                 <mat-form-field>
                   <mat-label>Name of Previous Certification/Training</mat-label>
-                  <input matInput />
+                  <input [ngModel]="selectedForm.nameOfPreviousCert" matInput formControlName="nameOfPreviousCert"/>
                 </mat-form-field>
               </div>
               <div class="col">
                 <mat-form-field>
                   <mat-label>Date of Previous Certification/Training</mat-label>
-                  <input matInput [matDatepicker]="previousCertificateDate" />
+                  <input [max]="todayDate" [ngModel]="selectedForm.dateOfPreviousCert"  matInput [matDatepicker]="previousCertificateDate" formControlName="dateOfPreviousCert" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
                     [for]="previousCertificateDate"
                   ></mat-datepicker-toggle>
                   <mat-datepicker #previousCertificateDate></mat-datepicker>
+                  @if(reimbursementForm.get('dateOfPreviousCert')?.getError('matDatepickerMax')) {
+                    <mat-error>Previous training date has to be in the past </mat-error>
+                  }
                 </mat-form-field>
               </div>
             </div>
@@ -126,7 +170,7 @@
               <div class="col">
                 <mat-form-field class="signOff">
                   <mat-label>Employee Sign Off Date</mat-label>
-                  <input matInput [matDatepicker]="employeeSignOff" />
+                  <input [min]="todayDate" [max]="todayDate" [ngModel]="selectedForm.employeeSignOffDate" matInput [matDatepicker]="employeeSignOff" formControlName="employeeSignOffDate"/>
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -138,7 +182,7 @@
               <div class="col">
                 <mat-form-field class="signOff">
                   <mat-label>Lead Sign Off Date</mat-label>
-                  <input matInput [matDatepicker]="leadSignOff" />
+                  <input [ngModel]="selectedForm.leadSignOffDate" matInput [matDatepicker]="leadSignOff" formControlName="leadSignOffDate" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -150,7 +194,7 @@
               <div class="col">
                 <mat-form-field class="signOff">
                   <mat-label>Executive Sign Off Date</mat-label>
-                  <input matInput [matDatepicker]="executiveSignOff" />
+                  <input [ngModel]="selectedForm.executiveSignOffDate" matInput [matDatepicker]="executiveSignOff" formControlName="executiveSignOffDate" />
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -160,9 +204,23 @@
                 </mat-form-field>
               </div>
             </div>
+            <div class="container">
+              <div class="row mt-5">
+                <div class="col-md-4">
+                  <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload file example</label>
+                    <input (change)="this.onFileChange($event)" class="form-control" type="file" id="formFile">
+                  </div>
+                </div>
+              </div>
+            </div>   
             <div class="row">
                 <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
-                <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                @if(reimbursementForm.errors || reimbursementForm.invalid){
+                  <button mat-fab extended  disabled class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                } @else {
+                  <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                }
             </div>
   
           </form>
