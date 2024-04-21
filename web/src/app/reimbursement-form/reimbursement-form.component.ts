@@ -22,6 +22,7 @@ import html2canvas from 'html2canvas';
 import { FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import  {v4 as uuid}  from 'uuid'
 @Component({
   selector: 'app-reimbursement-form',
   standalone: true,
@@ -46,6 +47,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export class ReimbursementFormComponent {
   constructor(private formBuilder: FormBuilder, private http: HttpClient, ) {}
+  private bucketName = "rsp-web"
   private baseUrl =
     'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
@@ -139,8 +141,8 @@ export class ReimbursementFormComponent {
   }
 
   async submitForm() {
+    let id = "";
     let formParams;
-    let fileId = "";
     let body = {
       employeeName: this.reimbursementForm.value.employeeName,
       certName: this.reimbursementForm.value.certName,
@@ -156,15 +158,17 @@ export class ReimbursementFormComponent {
       nameOfPreviousCert: this.reimbursementForm.value.nameOfPreviousCert,
       dateOfPreviousCert: this.reimbursementForm.value.dateOfPreviousCert,
       employeeSignOffDate: this.reimbursementForm.value.employeeSignOffDate,
-      file: fileId,
+      file: id,
     }; 
 
     if(this.file) {
+      id = uuid();
+      console.log(id);
       formParams = new FormData();
       formParams.append('file', this.file);
-      await this.http.post(this.baseUrl+"/file", formParams, {headers: this.headers}).subscribe((res) => {
-      body.file = res.toString();
-      if(this.reimbursementForm.valid && fileId != null ){
+      await this.http.put(this.baseUrl+`/${this.bucketName}/${id}`, formParams, {headers: this.headers}).subscribe((res) => {
+      body.file = id;
+      if(this.reimbursementForm.valid && body.file != null ){
         const url = this.baseUrl + "/form"
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
           console.log(data);
@@ -185,7 +189,7 @@ export class ReimbursementFormComponent {
 
   createNewForm() {
     this.reimbursementForm.reset();
-    this.reimbursementForm.markAsPristine();
+    this.reimbursementForm.markAsUntouched();
   }
 
   forbiddenCharacterValidator(nameRe: RegExp): ValidatorFn {
