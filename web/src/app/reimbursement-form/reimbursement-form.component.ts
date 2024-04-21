@@ -22,6 +22,7 @@ import html2canvas from 'html2canvas';
 import { FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import  {v4 as uuid}  from 'uuid'
 @Component({
   selector: 'app-reimbursement-form',
   standalone: true,
@@ -46,12 +47,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 export class ReimbursementFormComponent {
   constructor(private formBuilder: FormBuilder, private http: HttpClient, ) {}
+  private bucketName = "rsp-web";
   private baseUrl =
-    'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
+    'https://vsv7otixtd.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
     'Access-Control-Allow-Headers':
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,Access-Control-Allow-Origin',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'X-Api-Key': 's72QDvMGEKaLlvoQB8mFt8E8Z7xzwTVL1GwyLhiX'
   });
   forms: TForm[] = [];
   selectedForm: TForm = {
@@ -101,9 +104,6 @@ export class ReimbursementFormComponent {
 
   getSelectedForm(event: string) {
     this.selectedForm = this.getForm(event);
-    if(this.selectedForm.file) {
-      this.getFileFromBucket(this.selectedForm.file);
-    }
   }
 
   getForm(id: string): TForm {
@@ -115,11 +115,9 @@ export class ReimbursementFormComponent {
     return { id: '' };
   }
 
-  getFileFromBucket(fileId: string) {
-    const url = this.baseUrl+`/file/${fileId}`;
-    this.http.get(url, {headers: this.headers}).subscribe((data) => {
-      console.log(data);
-    })
+  viewFile(fileId: string) {
+  const url = `http://rsp-web.s3-website.us-east-2.amazonaws.com/${fileId}`
+    window.open(url,'_blank');
   }
 
 
@@ -139,7 +137,6 @@ export class ReimbursementFormComponent {
   }
 
   async submitForm() {
-    let formParams;
     let fileId = "";
     let body = {
       employeeName: this.reimbursementForm.value.employeeName,
@@ -160,10 +157,10 @@ export class ReimbursementFormComponent {
     }; 
 
     if(this.file) {
-      formParams = new FormData();
-      formParams.append('file', this.file);
-      await this.http.post(this.baseUrl+"/file", formParams, {headers: this.headers}).subscribe((res) => {
-      body.file = res.toString();
+      fileId = uuid();
+      const url = "https://szcf2csx50.execute-api.us-east-2.amazonaws.com/default/"
+      await this.http.put(url+`${this.bucketName}/${fileId}`, this.file, {headers: this.headers}).subscribe((res) => {
+      body.file = fileId;
       if(this.reimbursementForm.valid && fileId != null ){
         const url = this.baseUrl + "/form"
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
@@ -186,6 +183,7 @@ export class ReimbursementFormComponent {
   createNewForm() {
     this.reimbursementForm.reset();
     this.reimbursementForm.markAsPristine();
+    this.reimbursementForm.markAsUntouched();
   }
 
   forbiddenCharacterValidator(nameRe: RegExp): ValidatorFn {
