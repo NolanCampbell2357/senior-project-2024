@@ -49,7 +49,7 @@ export class ReimbursementFormComponent {
   constructor(private formBuilder: FormBuilder, private http: HttpClient, ) {}
   private bucketName = "rsp-web";
   private baseUrl =
-    'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
+    'https://vsv7otixtd.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
     'Access-Control-Allow-Headers':
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,Access-Control-Allow-Origin',
@@ -181,6 +181,7 @@ export class ReimbursementFormComponent {
 
   createNewForm() {
     this.reimbursementForm.reset();
+    this.reimbursementForm.markAsPristine();
     this.reimbursementForm.markAsUntouched();
   }
 
