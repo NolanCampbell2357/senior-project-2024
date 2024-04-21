@@ -29,6 +29,7 @@ export const handler: (
     console.log(`[post-form-approve] Result: ${resultBody}`)
     return {
       statusCode: 200,
+      headers:{"access-control-allow-origin":'*'},
       body: JSON.stringify(resultBody)
     };
   } catch (err) {
@@ -39,6 +40,7 @@ export const handler: (
     };
     return {
       statusCode: 500,
+      headers:{"access-control-allow-origin":'*'},
       body: JSON.stringify(error)
     };
   }

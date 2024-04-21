@@ -22,6 +22,7 @@ export const handler: (
 
     return {
       statusCode: 200,
+      headers:{"access-control-allow-origin":'*'},
       body: JSON.stringify(response)
     };
   } catch (err) {
@@ -32,6 +33,7 @@ export const handler: (
     };
     return {
       statusCode: 500,
+      headers:{"access-control-allow-origin":'*'},
       body: JSON.stringify(error)
     };
   }

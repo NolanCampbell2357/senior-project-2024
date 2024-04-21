@@ -28,6 +28,7 @@ export const handler: (
       };
       return {
         statusCode: 500,
+        headers:{"access-control-allow-origin":'*'},
         body: JSON.stringify(error)
       };
     }
@@ -44,6 +45,7 @@ export const handler: (
 
     return {
       statusCode: 200,
+      headers:{"access-control-allow-origin":'*'},
       body: JSON.stringify(updateForm)
     };
   } catch (err) {
@@ -54,6 +56,7 @@ export const handler: (
     };
     return {
       statusCode: 500,
+      headers:{"access-control-allow-origin":'*'},
       body: JSON.stringify(error)
     };
   }
