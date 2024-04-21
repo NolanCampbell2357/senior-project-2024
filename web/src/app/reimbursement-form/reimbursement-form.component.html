@@ -212,12 +212,20 @@
                     <input (change)="this.onFileChange($event)" class="form-control" type="file" id="formFile">
                   </div>
                 </div>
+                @if(selectedForm.file) {
+                  <mat-card class="mb-3">
+                    <mat-card-actions>
+                      {{selectedForm.file}}
+                      <button mat-button (click)="viewFile(selectedForm.file)">Open</button>
+                    </mat-card-actions>
+                  </mat-card>
+                }
               </div>
             </div>   
             <div class="row">
                 <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
                 @if(reimbursementForm.errors || reimbursementForm.invalid){
-                  <button mat-fab extended  disabled class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                  <button mat-fab extended   class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
                 } @else {
                   <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
                 }

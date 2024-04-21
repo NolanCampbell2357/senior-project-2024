@@ -47,7 +47,7 @@ import  {v4 as uuid}  from 'uuid'
 
 export class ReimbursementFormComponent {
   constructor(private formBuilder: FormBuilder, private http: HttpClient, ) {}
-  private bucketName = "rsp-web"
+  private bucketName = "rsp-web";
   private baseUrl =
     'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
@@ -103,9 +103,6 @@ export class ReimbursementFormComponent {
 
   getSelectedForm(event: string) {
     this.selectedForm = this.getForm(event);
-    if(this.selectedForm.file) {
-      this.getFileFromBucket(this.selectedForm.file);
-    }
   }
 
   getForm(id: string): TForm {
@@ -117,11 +114,9 @@ export class ReimbursementFormComponent {
     return { id: '' };
   }
 
-  getFileFromBucket(fileId: string) {
-    const url = this.baseUrl+`/file/${fileId}`;
-    this.http.get(url, {headers: this.headers}).subscribe((data) => {
-      console.log(data);
-    })
+  viewFile(fileId: string) {
+  const url = `http://rsp-web.s3-website.us-east-2.amazonaws.com/${fileId}`
+    window.open(url,'_blank');
   }
 
 
@@ -141,8 +136,7 @@ export class ReimbursementFormComponent {
   }
 
   async submitForm() {
-    let id = "";
-    let formParams;
+    let fileId = "";
     let body = {
       employeeName: this.reimbursementForm.value.employeeName,
       certName: this.reimbursementForm.value.certName,
@@ -158,17 +152,15 @@ export class ReimbursementFormComponent {
       nameOfPreviousCert: this.reimbursementForm.value.nameOfPreviousCert,
       dateOfPreviousCert: this.reimbursementForm.value.dateOfPreviousCert,
       employeeSignOffDate: this.reimbursementForm.value.employeeSignOffDate,
-      file: id,
+      file: fileId,
     }; 
 
     if(this.file) {
-      id = uuid();
-      console.log(id);
-      formParams = new FormData();
-      formParams.append('file', this.file);
-      await this.http.put(this.baseUrl+`/${this.bucketName}/${id}`, formParams, {headers: this.headers}).subscribe((res) => {
-      body.file = id;
-      if(this.reimbursementForm.valid && body.file != null ){
+      fileId = uuid();
+      const url = "https://szcf2csx50.execute-api.us-east-2.amazonaws.com/default/"
+      await this.http.put(url+`${this.bucketName}/${fileId}`, this.file, {headers: this.headers}).subscribe((res) => {
+      body.file = fileId;
+      if(this.reimbursementForm.valid && fileId != null ){
         const url = this.baseUrl + "/form"
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
           console.log(data);
