@@ -52,7 +52,7 @@ export class AdminComponent {
 
   constructor(private http: HttpClient, ) {}
   private baseUrl =
-    'https://fmpfbaicr5.execute-api.us-east-2.amazonaws.com/test';
+  'https://vsv7otixtd.execute-api.us-east-2.amazonaws.com/default';
   private headers: HttpHeaders = new HttpHeaders({
     'Access-Control-Allow-Headers':
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,Access-Control-Allow-Origin',
