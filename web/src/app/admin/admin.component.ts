@@ -100,10 +100,16 @@ export class AdminComponent {
       let selectedForm: TForm = this.getSelectedForm(formId);
       let todayDate = new Date();
 
+      let body = {
+        employeeSignOffDate: selectedForm.employeeSignOffDate,
+        leadSignOffDate: todayDate,
+        executiveSignOffDate: selectedForm.executiveSignOffDate,
+        approved: true,
+      };
+
       console.log("Approving form: "+ formId);
       const url: string = this.baseUrl + ('/form/'+ formId + '/approve');
-      this.http.post(url,
-        { employeeSignOffDate: selectedForm.employeeSignOffDate, leadSignOffDate: todayDate, executiveSignOffDate: selectedForm.executiveSignOffDate, approved: true, },
+      this.http.post(url, body,
         { headers: this.headers }).subscribe((data) => {
         console.log(data);
       })
@@ -116,10 +122,16 @@ export class AdminComponent {
       let selectedForm: TForm = this.getSelectedForm(formId);
       let todayDate = new Date();
 
+      let body = {
+        employeeSignOffDate: selectedForm.employeeSignOffDate,
+        leadSignOffDate: "",
+        executiveSignOffDate: selectedForm.executiveSignOffDate,
+        approved: false,
+      };
+
       console.log("Denying form: "+ formId);
       const url: string = this.baseUrl + ('/form/'+ formId + '/approve');
-      this.http.post(url,
-        { employeeSignOffDate: selectedForm.employeeSignOffDate, leadSignOffDate: "", executiveSignOffDate: selectedForm.executiveSignOffDate, approved: false, },
+      this.http.post(url, body,
         { headers: this.headers }).subscribe((data) => {
         console.log(data);
       })
