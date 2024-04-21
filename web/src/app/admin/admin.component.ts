@@ -52,13 +52,14 @@ export class AdminComponent {
 
   constructor(private http: HttpClient, ) {}
   private baseUrl =
-    'https://q5ntgmz1h8.execute-api.us-east-2.amazonaws.com/default';
+    'https://fmpfbaicr5.execute-api.us-east-2.amazonaws.com/test';
   private headers: HttpHeaders = new HttpHeaders({
     'Access-Control-Allow-Headers':
       'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Access-Control-Allow-Headers,Access-Control-Allow-Origin',
-    'Access-Control-Allow-Origin': '*'
+    'Access-Control-Allow-Origin': '*',
+    'X-Api-Key': 's72QDvMGEKaLlvoQB8mFt8E8Z7xzwTVL1GwyLhiX'
   });
-
+  
   ngOnInit() {
     this.getForms();
   }
@@ -101,9 +102,9 @@ export class AdminComponent {
       let todayDate = new Date();
 
       let body = {
-        employeeSignOffDate: selectedForm.employeeSignOffDate,
+        employeeSignOffDate: selectedForm?.employeeSignOffDate ?? "",
         leadSignOffDate: todayDate,
-        executiveSignOffDate: selectedForm.executiveSignOffDate,
+        executiveSignOffDate: selectedForm?.executiveSignOffDate ?? "",
         approved: true,
       };
 
@@ -125,7 +126,7 @@ export class AdminComponent {
       let body = {
         employeeSignOffDate: selectedForm.employeeSignOffDate,
         leadSignOffDate: "",
-        executiveSignOffDate: selectedForm.executiveSignOffDate,
+        executiveSignOffDate: selectedForm?.executiveSignOffDate ?? "",
         approved: false,
       };
 
