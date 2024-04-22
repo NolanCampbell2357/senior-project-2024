@@ -133,7 +133,7 @@
               <div class="col">
                 <mat-form-field>
                   <mat-label>Certification Cost</mat-label>
-                  <input [ngModel]="selectedForm.certCost" matInput formControlName="certCost" />
+                  <input type="number" [ngModel]="selectedForm.certCost" matInput formControlName="certCost" min="0" />
                   @if(reimbursementForm.get('certCost')?.getError('required')) {
                     <mat-error>Certification Cost is required</mat-error>
                   }
@@ -170,7 +170,7 @@
               <div class="col">
                 <mat-form-field class="signOff">
                   <mat-label>Employee Sign Off Date</mat-label>
-                  <input [min]="todayDate" [max]="todayDate" [ngModel]="selectedForm.employeeSignOffDate" matInput [matDatepicker]="employeeSignOff" formControlName="employeeSignOffDate"/>
+                  <input required [min]="todayDate" [max]="todayDate" [ngModel]="selectedForm.employeeSignOffDate" matInput [matDatepicker]="employeeSignOff" formControlName="employeeSignOffDate"/>
                   <mat-hint>MM/DD/YYYY</mat-hint>
                   <mat-datepicker-toggle
                     matIconSuffix
@@ -225,7 +225,7 @@
             <div class="row">
                 <button mat-fab extended class="white ms-auto" (click)="exportToPDF()">Export to PDF</button>
                 @if(reimbursementForm.errors || reimbursementForm.invalid){
-                  <button mat-fab extended   class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
+                  <button mat-fab extended disabled class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
                 } @else {
                   <button mat-fab extended  class="golden-yellow" class="pl-3" type="submit" class="btn btn-primary">Save</button>
                 }
