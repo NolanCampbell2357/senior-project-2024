@@ -23,6 +23,7 @@ import { FormBuilder } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import  {v4 as uuid}  from 'uuid'
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-reimbursement-form',
   standalone: true,
@@ -46,7 +47,7 @@ import  {v4 as uuid}  from 'uuid'
 })
 
 export class ReimbursementFormComponent {
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, ) {}
+  constructor(private formBuilder: FormBuilder, private http: HttpClient, private snackBar: MatSnackBar ) {}
   private bucketName = "rsp-web";
   private baseUrl =
     'https://vsv7otixtd.execute-api.us-east-2.amazonaws.com/default';
@@ -167,6 +168,9 @@ export class ReimbursementFormComponent {
       if(this.reimbursementForm.valid && fileId != null ){
         const url = this.baseUrl + "/form" + id
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
+          if(data) {
+            this.snackBar.open('Form Successfully Uploaded',"Close", {duration: 10000})
+          }
           console.log(data);
           if(!id) {
             console.log("add")
@@ -180,6 +184,7 @@ export class ReimbursementFormComponent {
       if(this.reimbursementForm.valid){
         const url = this.baseUrl + "/form" + id
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
+          this.snackBar.open('Form Successfully Uploaded',"Close", {duration: 10000})
           console.log(data);
           if(!id) {
             console.log("add")
@@ -198,7 +203,7 @@ export class ReimbursementFormComponent {
     this.reimbursementForm.reset();
     this.reimbursementForm.markAsPristine();
     this.reimbursementForm.markAsUntouched();
-  }
+ }
 
   forbiddenCharacterValidator(nameRe: RegExp): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
