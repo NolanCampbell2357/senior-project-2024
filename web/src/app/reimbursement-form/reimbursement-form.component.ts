@@ -184,6 +184,7 @@ export class ReimbursementFormComponent {
       if(this.reimbursementForm.valid){
         const url = this.baseUrl + "/form" + id
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
+          this.snackBar.open('Form Successfully Uploaded',"Close", {duration: 10000})
           console.log(data);
           if(!id) {
             console.log("add")
