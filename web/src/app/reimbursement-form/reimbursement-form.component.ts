@@ -203,7 +203,7 @@ export class ReimbursementFormComponent {
     this.reimbursementForm.reset();
     this.reimbursementForm.markAsPristine();
     this.reimbursementForm.markAsUntouched();
-  }
+ }
 
   forbiddenCharacterValidator(nameRe: RegExp): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
