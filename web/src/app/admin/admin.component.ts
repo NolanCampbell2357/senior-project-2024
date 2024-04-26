@@ -5,6 +5,7 @@ import {
   MatFabButton,
   MatIconButton
 } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { MatCard } from '@angular/material/card';
 import {
@@ -67,7 +68,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     NgForOf,
     MatCheckbox,
     ReactiveFormsModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule
   ],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.css'
@@ -108,6 +110,8 @@ export class AdminComponent {
   employeeSignOffDateField?: string = '';
   leadSignOffDateField?: string = undefined;
   executiveSignOffDateField?: string = undefined;
+  file?: string = '';
+
   protected readonly open = open;
 
   adminForm = this.formBuilder.group({
@@ -129,6 +133,12 @@ export class AdminComponent {
       return this.submittedForms;
     });
   }
+
+  
+  viewFile(fileId: string) {
+    const url = `http://rsp-web.s3-website.us-east-2.amazonaws.com/${fileId}`
+      window.open(url,'_blank');
+    }
 
   approveForm(formId: string) {
     if (formId != null && formId != '' && formId != '-1') {
@@ -239,6 +249,7 @@ export class AdminComponent {
       this.employeeSignOffDateField = selectedForm.employeeSignOffDate;
       this.leadSignOffDateField = selectedForm.leadSignOffDate;
       this.executiveSignOffDateField = selectedForm.executiveSignOffDate;
+      this.file = selectedForm.file;
     }
   }
 
