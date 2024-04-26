@@ -1,32 +1,62 @@
 .admin {
   width: 100vw;
   height: 100vh;
-}
-
-.admin-forms-nav {
-  width: 100vw;
-  height: 100vh;
-  /*border: 1px solid rgba(0,0,0,0.5);*/
+  overflow-x: hidden;
 }
 
 .sidenav-button {
   display: flex;
   height: 25%;
+  overflow-x: hidden;
 }
 
 .form-sidenav {
   padding: 20px;
   width: 33vh;
+  /*height: 100vh;*/
+  overflow-x: hidden;
 }
 
 .sidenav-content {
-  padding-left: 10px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  padding-right: 10px;
+  padding: 10px;
+  overflow-x: hidden;
 }
 
 .nav-button {
   align-content: center;
   justify-content: center;
+}
+
+.deadForm {
+  padding: 10px;
+}
+
+.button {
+  padding-right: 10px;
+}
+
+.mat-form-field {
+  width: auto;
+}
+
+.startMessage {
+  padding-left: 25px;
+}
+
+.mat-card {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.mat-drawer-container {
+  height: 90vh;
+  overflow-x: hidden;
+}
+
+.div {
+  overflow-x: hidden;
+}
+
+.mat-drawer {
+  overflow-x: hidden;
 }

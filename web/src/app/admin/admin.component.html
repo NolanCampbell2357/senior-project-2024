@@ -1,36 +1,252 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+  rel="stylesheet"
+/>
 
 <style>
   .material-symbols-outlined {
-    font-variation-settings:
-      'FILL' 0,
-      'wght' 400,
-      'GRAD' 0,
-      'opsz' 24
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   }
 </style>
 
-<div class="admin">
-  <div class="sidenav">
-    <mat-drawer-container class="admin-forms-nav" autosize>
-      <mat-drawer #drawer class="form-sidenav" mode="side">
-        <h1>Forms</h1>
-        <mat-selection-list [multiple]="false">
-          <mat-list-option>Form #1</mat-list-option>
-          <mat-list-option>Form #2</mat-list-option>
-          <mat-list-option>Form #3</mat-list-option>
-          <mat-list-option>Form #4</mat-list-option>
-        </mat-selection-list>
-      </mat-drawer>
-      <div class="sidenav-content">
-        <button mat-icon-button class="nav-button" (click)="opened = !opened; drawer.toggle(); iconChange()">
-          <span class="material-symbols-outlined" id="nav-button-icon">chevron_right</span>
+<mat-drawer-container class="admin-forms-nav">
+  <mat-drawer
+    #drawer
+    class="form-sidenav"
+    mode="side"
+  >
+    <h1>Forms</h1>
+    <mat-selection-list
+      #formOptions
+      [multiple]="false"
+    >
+      <mat-list-option
+        (click)="updateFields(formObj.id)"
+        *ngFor="let formObj of submittedForms"
+        [value]="formObj.id"
+      >
+        Form {{ formObj.id }}</mat-list-option
+      >
+    </mat-selection-list>
+  </mat-drawer>
+  <div class="sidenav-content">
+    <button
+      (click)="opened = !opened; drawer.toggle(); iconChange()"
+      class="nav-button"
+      mat-icon-button
+    >
+      <span
+        class="material-symbols-outlined"
+        id="nav-button-icon"
+        >chevron_right</span
+      >
+    </button>
+  </div>
+  <br />
+  <div
+    [hidden]="formOptions.selectedOptions.hasValue()"
+    class="startMessage"
+  >
+    <p>Click the '>' button and select a form to start.</p>
+  </div>
+  <mat-card>
+    <div
+      [hidden]="!formOptions.selectedOptions.hasValue()"
+      class="adminForms"
+    >
+      <form
+        class="deadForm"
+        [formGroup]="adminForm"
+      >
+        <div class="row">
+          <div class="col">
+            <mat-form-field id="firstName">
+              <mat-label>First name</mat-label>
+              <input
+                disabled
+                matInput
+                value="{{ firstNameField }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Name of Certification</mat-label>
+              <input
+                disabled
+                matInput
+                value="{{ certNameField }}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <mat-checkbox
+            checked="{{ ROCRequestedField }}"
+            disabled="true"
+            >ROC has requested I complete this training
+          </mat-checkbox>
+          <mat-checkbox
+            checked="{{ personalDevelopmentField }}"
+            disabled="true"
+            >Personal Development</mat-checkbox
+          >
+        </div>
+        <div class="row">
+          <mat-form-field>
+            <mat-label>Reason for Certification</mat-label>
+            <textarea
+              disabled
+              matInput
+              value="{{ reasonField }}"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Estimated Time of Completion</mat-label>
+              <textarea
+                disabled
+                matInput
+                value="{{ estimatedCompletionTimeField }}"
+              ></textarea>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Estimated Completion Date</mat-label>
+              <input
+                [ngModel]="estimatedCompletionDateField"
+                matInput
+                [matDatepicker]="estimatedCompletion"
+                formControlName="estimatedCompletionDate"
+              />
+              <mat-datepicker #estimatedCompletion></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Certificate Expiration</mat-label>
+              <input
+                [ngModel]="certExpirationDateField"
+                matInput
+                [matDatepicker]="certificationExpiration"
+                formControlName="certExpirationDate"
+              />
+              <mat-datepicker #certificationExpiration></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Certificate Cost</mat-label>
+              <input
+                disabled
+                matInput
+                value="{{ certCostField }}"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Name of Previous Certification/Training</mat-label>
+              <input
+                disabled
+                matInput
+                value="{{ nameOfPreviousCertField }}"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Date of Previous Certification/Training</mat-label>
+              <input
+                [ngModel]="dateOfPreviousCertField"
+                matInput
+                [matDatepicker]="previousCertificateDate"
+                formControlName="dateOfPreviousCert"
+              />
+              <mat-datepicker #previousCertificateDate></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class = "col">
+          @if(file) {
+            <mat-card class="mb-3">
+              <mat-card-actions>
+                Document: {{file}}
+                <button mat-button (click)="viewFile(file)">Open</button>
+              </mat-card-actions>
+            </mat-card>
+          }
+        </div>
+        <div class="row">
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Employee Sign Off Date</mat-label>
+              <input
+                [ngModel]="employeeSignOffDateField"
+                matInput
+                [matDatepicker]="employeeSignOff"
+                formControlName="employeeSignOffDate"
+              />
+              <mat-datepicker #employeeSignOff></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Lead Sign Off Date</mat-label>
+              <input
+                [ngModel]="leadSignOffDateField"
+                matInput
+                [matDatepicker]="leadSignOff"
+                formControlName="leadSignOffDate"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="leadSignOff"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #leadSignOff></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Executive Sign Off Date</mat-label>
+              <input
+                [ngModel]="executiveSignOffDateField"
+                matInput
+                [matDatepicker]="executiveSignOff"
+                formControlName="executiveSignOffDate"
+              />
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle
+                matIconSuffix
+                [for]="executiveSignOff"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #executiveSignOff></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <button
+          (click)="approveForm(formOptions.selectedOptions.selected[0].value)"
+          extended
+          mat-fab
+        >
+          Approve
         </button>
-      </div>
-    </mat-drawer-container>
-  </div>
-  <div class="form-fields">
-  </div>
-</div>
-
-
+        <button
+          (click)="denyForm(formOptions.selectedOptions.selected[0].value)"
+          extended
+          mat-fab
+        >
+          Deny
+        </button>
+      </form>
+    </div>
+  </mat-card>
+</mat-drawer-container>

@@ -3,6 +3,22 @@
 
 }
 
-.admin {
-  height: max-content;
+.app-admin {
+  height: 100vh;
+}
+
+.mat-mdc-tab-group, .mat-mdc-tab-nav-bar {
+  --mdc-tab-indicator-active-indicator-color: #fbd94a;
+  --mat-tab-header-disabled-ripple-color: rgba(0, 0, 0, 0.38);
+  --mat-tab-header-pagination-icon-color: black;
+  --mat-tab-header-inactive-label-text-color: rgba(0, 0, 0, 0.6);
+  --mat-tab-header-active-label-text-color: #fbd94a;
+  --mat-tab-header-active-ripple-color: #fbd94a;
+  --mat-tab-header-inactive-ripple-color: #fbd94a;
+  --mat-tab-header-inactive-focus-label-text-color: rgba(0, 0, 0, 0.6);
+  --mat-tab-header-inactive-hover-label-text-color: rgba(0, 0, 0, 0.6);
+  --mat-tab-header-active-focus-label-text-color: #fbd94a;
+  --mat-tab-header-active-hover-label-text-color: #fbd94a;
+  --mat-tab-header-active-focus-indicator-color: #fbd94a;
+  --mat-tab-header-active-hover-indicator-color: #fbd94a;
 }

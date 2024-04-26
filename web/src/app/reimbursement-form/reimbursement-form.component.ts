@@ -156,23 +156,36 @@ export class ReimbursementFormComponent {
       file: fileId,
     }; 
 
+    const id  = this.selectedForm.id ? ("/"+this.selectedForm.id) : "";
+    console.log(this.selectedForm)
+
     if(this.file) {
       fileId = uuid();
       const url = "https://szcf2csx50.execute-api.us-east-2.amazonaws.com/default/"
       await this.http.put(url+`${this.bucketName}/${fileId}`, this.file, {headers: this.headers}).subscribe((res) => {
       body.file = fileId;
       if(this.reimbursementForm.valid && fileId != null ){
-        const url = this.baseUrl + "/form"
+        const url = this.baseUrl + "/form" + id
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
           console.log(data);
+          if(!id) {
+            console.log("add")
+            this.forms.push(data);
+            this.selectedForm = data;
+          }
         })
       } 
     });
     }  else {
       if(this.reimbursementForm.valid){
-        const url = this.baseUrl + "/form"
+        const url = this.baseUrl + "/form" + id
         this.http.post(url, body, {headers: this.headers}).subscribe((data) => {
           console.log(data);
+          if(!id) {
+            console.log("add")
+            this.forms.push(data);
+            this.selectedForm = data;
+          }
         })
       } 
     }
@@ -181,6 +194,7 @@ export class ReimbursementFormComponent {
   }
 
   createNewForm() {
+    this.selectedForm = {};
     this.reimbursementForm.reset();
     this.reimbursementForm.markAsPristine();
     this.reimbursementForm.markAsUntouched();
@@ -199,7 +213,7 @@ export class ReimbursementFormComponent {
 }
 
 export interface TForm {
-  id: String;
+  id?: String;
   employeeName?: string;
   certName?: string;
   ROCRequested?: boolean;
